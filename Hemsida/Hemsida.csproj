@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+	<TargetFramework>net6.0</TargetFramework>
+	  <AssemblyName>Tellurian.Website</AssemblyName>
+	  <RootNamespace>Tellurian.Website</RootNamespace>
+	<Nullable>enable</Nullable>
+	<ImplicitUsings>enable</ImplicitUsings>
+	<ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<PackageReference Include="Markdig" Version="0.30.2" />
+	<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.7" />
+	<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.7" PrivateAssets="all" />
+	<PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<None Update="Content\Markdown\Start.md">
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</None>
+  </ItemGroup>
+
+</Project>

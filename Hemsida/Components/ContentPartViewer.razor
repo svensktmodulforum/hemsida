@@ -1,0 +1,56 @@
+﻿@inject MarkdownLoader MarkdownLoader
+
+@if (IsVisible)
+{
+    @if (Content is null)
+    {
+        <div class="alert alert-info">Innehåll hämtas...</div>
+
+    }
+    else if (IsEmpty)
+    {
+        <divclass ="alert alert-info">Inget innehåll.</divclass>
+    }
+    else
+    {
+        if (ShowModificationTime)
+        {
+            <div class="alert alert-info"><span class="fa fa-pen-square" /> @ContentLastModified( Content.LastModified)</div>
+        }
+        <div style="background-color: @BackgroundColor; padding: @Padding">
+            @((MarkupString)Content.AsHtml)
+        </div>
+    }
+}
+@code {
+    [Parameter] public string? ContentName { get; set; }
+    [Parameter] public string? Language { get; set; } = null;
+    [Parameter] public string? Href { get; set; } = null;
+    [Parameter] public bool ShowModificationTime { get; set; }
+    [Parameter] public bool IsHidden { get; set; }
+    [Parameter] public string? BackgroundColor { get; set; }
+
+    MarkdownContent? Content;
+
+    protected async override Task OnParametersSetAsync()
+    {
+        if (Href is not null)
+        {
+            Content = await MarkdownLoader.GetRemoteMarkdownContentAsync(Href);
+        }
+        else if (ContentName is not null)
+        {
+            Content = await MarkdownLoader.GetLocalMarkdownContentAsync(ContentName, Language);
+        }
+        else
+        {
+            Content = MarkdownContent.Empty;
+        }
+    }
+
+    string Padding => BackgroundColor.HasValue() ? "5pt" : "0px";
+    bool IsVisible => !IsHidden;
+    bool IsEmpty => (string.IsNullOrWhiteSpace(ContentName) && string.IsNullOrWhiteSpace(Href)) || string.IsNullOrWhiteSpace(Content?.Text);
+    string ContentLastModified(DateTimeOffset lastModified) => $"Innehållet på denna sida senast ändrat {lastModified:g}";
+}
+

@@ -1,0 +1,14 @@
+﻿@page "/"
+@page "/{contentName}"
+
+<PageTitle>@Constants.OrganisationName</PageTitle>
+
+<ContentPartViewer ContentName="@Name" />
+
+
+@code {
+    [Parameter] public string? ContentName { get; set; }
+
+    string Name => ContentName ?? "Start";
+
+}
